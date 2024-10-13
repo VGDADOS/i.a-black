@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VG BLACK I.A.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d, #404040);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #FFD700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.5);
+            animation: glow 1s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+            100% { text-shadow: 0 0 30px rgba(255, 215, 0, 1); }
+        }
+
+        label {
+            display: block;
+            margin: 8px 0;
+            font-size: 1.1em;
+        }
+
+        input {
+            padding: 10px;
+            border: 2px solid #FFD700;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 300px;
+            font-size: 1em;
+            background: rgba(0, 0, 0, 0.5);
+            color: #FFD700;
+            transition: border-color 0.3s, background 0.3s;
+            margin-bottom: 15px;
+        }
+
+        input:focus {
+            border-color: #B8860B;
+            outline: none;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 25px;
+            background-color: #FFD700;
+            color: #121212;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        button:hover {
+            background-color: #B8860B;
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            min-height: 40px;
+        }
+
+        .data {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.8), rgba(255, 255, 255, 0.5));
+            border-radius: 10px;
+            position: absolute;
+            animation: float 6s ease-in-out infinite, rotate 4s linear infinite;
+            opacity: 0.9;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(360deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .data1 { top: 5%; left: 10%; animation-duration: 7s; }
+        .data2 { top: 15%; left: 40%; animation-duration: 8s; }
+        .data3 { top: 25%; left: 60%; animation-duration: 6s; }
+        .data4 { top: 35%; left: 30%; animation-duration: 9s; }
+        .data5 { top: 45%; left: 70%; animation-duration: 5s; }
+        .data6 { top: 55%; left: 20%; animation-duration: 10s; }
+
+        .login-container,
+        .loading-container,
+        .app {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-container.active,
+        .loading-container.active,
+        .app.active {
+            display: flex;
+        }
+
+        .loading-message {
+            font-size: 1em;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* Estilos para a bolinha de carregamento */
+        .loader {
+            border: 8px solid rgba(255, 215, 0, 0.3);
+            border-top: 8px solid #FFD700;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px; /* Centralizado e margem embaixo */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        const motivationalQuotes = [
+            "Acredite em você mesmo e todo o resto virá.",
+            "Se você pode sonhar, você pode realizar.",
+            "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
+            "Você é mais forte do que imagina.",
+            "A única maneira de fazer um ótimo trabalho é amar o que você faz."
+        ];
+
+        function calcular() {
+    const num1 = parseFloat(document.getElementById("num1").value);
+    const num2 = parseFloat(document.getElementById("num2").value);
+    const num3 = parseFloat(document.getElementById("num3").value);
+    const num4 = parseFloat(document.getElementById("num4").value);
+    const resultadoElement = document.getElementById("resultado");
+
+    resultadoElement.innerText = "I.A ANALISANDO PADRÃO...";
+    resultadoElement.style.color = "#FFD700"; 
+
+    setTimeout(() => {
+        const resultado = num1 / num2 / num3 / num4;
+
+        // Formata o resultado para mostrar apenas os três primeiros dígitos após o zero
+        const resultadoFormatado = resultado.toString().split('.')[1].slice(0, 3);
+        const rodadas = parseInt(resultadoFormatado, 10); // Converte os três primeiros dígitos em número
+
+        const mensagem = `Aguarde ${rodadas} rodadas.`;
+
+        // Verifica se os três primeiros dígitos formam um número par ou ímpar
+        const corMensagem = rodadas % 2 === 0 ? "🔵" : "🔴";
+        const finalMessage = `${mensagem} Entre na cor ${corMensagem}.`;
+
+        resultadoElement.innerText = finalMessage; // Atualiza a mensagem com o resultado
+        document.body.style.backgroundColor = "#2e2e2e"; 
+    }, 5000);
+}
+
+
+
+
+
+
+
+
+
+
+
+        function login() {
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            if ((usuario === "menor2" && senha === "menor2") || (usuario === "vgdados" && senha === "vgdados")) {
+                document.getElementById("login").classList.remove("active");
+                document.getElementById("loading").classList.add("active");
+                
+                let index = 0;
+                const loadingMessage = document.getElementById("loadingMessage");
+                setInterval(() => {
+                    loadingMessage.innerText = motivationalQuotes[index];
+                    index = (index + 1) % motivationalQuotes.length;
+                }, 3000);
+
+                setTimeout(() => {
+                    document.getElementById("loading").classList.remove("active");
+                    document.getElementById("app").classList.add("active");
+                }, 15000); // 15 segundos
+            } else {
+                alert("Usuário ou senha incorretos!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="login" class="login-container active">
+        <h1>Login VG BLACK</h1>
+        <label for="usuario">Usuário:</label>
+        <input type="text" id="usuario" placeholder="Digite seu usuário">
+        
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" placeholder="Digite sua senha">
+
+        <div class="button-container">
+            <button onclick="login()">Entrar</button>
+        </div>
+    </div>
+
+    <div id="loading" class="loading-container">
+        <div class="loader"></div> <!-- Bolinha de carregamento acima -->
+        <h1>Carregando...</h1>
+        <div class="loading-message" id="loadingMessage"></div>
+    </div>
+
+    <div id="app" class="app">
+        <h1>VG BLACK</h1>
+        <label for="num1">Número 1:</label>
+        <input type="number" id="num1" placeholder="Digite um número">
+
+        <label for="num2">Número 2:</label>
+        <input type="number" id="num2" placeholder="Digite um número">
+
+        <label for="num3">Número 3:</label>
+        <input type="number" id="num3" placeholder="Digite um número">
+
+        <label for="num4">Número 4:</label>
+        <input type="number" id="num4" placeholder="Digite um número">
+
+        <div class="button-container">
+            <button onclick="calcular()">Analisar</button>
+        </div>
+        
+        <p id="resultado"></p>
+
+        <div class="data data1"></div>
+        <div class="data data2"></div>
+        <div class="data data3"></div>
+        <div class="data data4"></div>
+        <div class="data data5"></div>
+        <div class="data data6"></div>
+    </div>
+</body>
+</html>
